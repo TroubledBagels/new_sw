@@ -258,6 +258,38 @@ protected:
 
 
 //
+// struct emu_log_op_desc
+//
+class EMULogOpDesc
+{
+public:
+    virtual size_t struct_size()  const = 0;
+    virtual size_t struct_align() const = 0;
+
+    virtual EMUCommonOpDescAccessor commonOpDescAccessor(NvU8 *base) const = 0;
+
+protected:
+    EMULogOpDesc()          { }
+    virtual ~EMULogOpDesc() { }
+};
+
+class EMULogOpDescAccessor
+{
+public:
+    NvU8 * struct_base()  const;
+    size_t struct_size()  const;
+    size_t struct_align() const;
+
+    EMUCommonOpDescAccessor commonOpDescAccessor() const;
+    EMULogOpDescAccessor(NvU8 *base, const EMULogOpDesc &);
+
+protected:
+    NvU8 *_base;
+    const EMULogOpDesc &_n;
+};
+
+
+//
 // union emu_operation_container
 //
 class EMUOperationContainer
@@ -268,6 +300,7 @@ public:
 
     virtual EMUPowerOpDescAccessor powerOpDescAccessor(NvU8 *base, size_t c) const = 0;
     virtual EMUSoftmaxOpDescAccessor softmaxOpDescAccessor(NvU8 *base, size_t c) const = 0;
+    virtual EMULogOpDescAccessor logOpDescAccessor(NvU8 *base, size_t c) const = 0;
 
 protected:
     EMUOperationContainer()          { }
@@ -283,6 +316,7 @@ public:
 
     EMUPowerOpDescAccessor powerOpDescAccessor(size_t c) const;
     EMUSoftmaxOpDescAccessor softmaxOpDescAccessor(size_t c) const;
+    EMULogOpDescAccessor logOpDescAccessor(size_t c) const;
 
     EMUOperationContainerAccessor(NvU8 *base, const EMUOperationContainer &);
 
@@ -410,6 +444,41 @@ protected:
 
 
 //
+// struct emu_log_buffer_descs
+//
+class EMULogBufferDescs
+{
+public:
+    virtual size_t struct_size()  const = 0;
+    virtual size_t struct_align() const = 0;
+
+    virtual EMUBufferDescAccessor srcDataAccessor(NvU8 *base) const = 0;
+    virtual EMUBufferDescAccessor dstDataAccessor(NvU8 *base) const = 0;
+
+protected:
+    EMULogBufferDescs()          { }
+    virtual ~EMULogBufferDescs() { }
+};
+
+class EMULogBufferDescsAccessor
+{
+public:
+    NvU8 * struct_base()  const;
+    size_t struct_size()  const;
+    size_t struct_align() const;
+
+    EMUBufferDescAccessor srcDataAccessor() const;
+    EMUBufferDescAccessor dstDataAccessor() const;
+
+    EMULogBufferDescsAccessor(NvU8 *base, const EMULogBufferDescs &);
+
+protected:
+    NvU8 *_base;
+    const EMULogBufferDescs &_n;
+};
+
+
+//
 // union emu_operation_buffer_container
 //
 class EMUOperationBufferContainer
@@ -420,6 +489,7 @@ public:
 
     virtual EMUPowerBufferDescsAccessor powerBufferDescsAccessor(NvU8 *base, size_t c) const = 0;
     virtual EMUSoftmaxBufferDescsAccessor softmaxBufferDescsAccessor(NvU8 *base, size_t c) const = 0;
+    virtual EMULogBufferDescsAccessor logBufferDescsAccessor(NvU8 *base, size_t c) const = 0;
 
 protected:
     EMUOperationBufferContainer()          { }
@@ -435,6 +505,7 @@ public:
 
     EMUPowerBufferDescsAccessor powerBufferDescsAccessor(size_t c) const;
     EMUSoftmaxBufferDescsAccessor softmaxBufferDescsAccessor(size_t c) const;
+    EMULogBufferDescsAccessor logBufferDescsAccessor(size_t c) const;
 
     EMUOperationBufferContainerAccessor(NvU8 *base, const EMUOperationBufferContainer &);
 

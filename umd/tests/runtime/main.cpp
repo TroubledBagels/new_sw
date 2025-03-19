@@ -1,40 +1,24 @@
 /*
- * Copyright (c) 2017, NVIDIA CORPORATION. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *  * Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *  * Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *  * Neither the name of NVIDIA CORPORATION nor the names of its
- *    contributors may be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
- * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * Author: Ben Hatton (10903872, University of Manchester)
+ * Description: main file for the new NVDLA runtime for a single UMD
+ * Date: 13/02/2025
  */
 
 #include "ErrorMacros.h"
+#ifndef RUNTIME_TEST_H
+#define RUNTIME_TEST_H
 #include "RuntimeTest.h"
+#endif
 #include "Server.h"
 
 #include "nvdla_os_inf.h"
 
 #include <cstring>
 #include <iostream>
+#include <vector>
 #include <cstdlib> // system
+#include <chrono>
+#include <thread>
 
 static TestAppArgs defaultTestAppArgs = TestAppArgs();
 
@@ -64,7 +48,7 @@ fail:
     return e;
 }
 
-static NvDlaError launchServer(const TestAppArgs* appArgs)
+static NvDlaError launchServer(const TestAppArgs* appArgs) 
 {
     NvDlaError e = NvDlaSuccess;
     TestInfo testInfo;
@@ -76,126 +60,220 @@ fail:
     return e;
 }
 
-static NvDlaError launchTest(const TestAppArgs* appArgs)
+static NvDlaError launchTest(const TestAppArgs appArgs, std::vector<std::string> loadableNames)
 {
     NvDlaError e = NvDlaSuccess;
     TestInfo testInfo;
 
     testInfo.dlaServerRunning = false;
-    PROPAGATE_ERROR_FAIL(testSetup(appArgs, &testInfo));
+    PROPAGATE_ERROR_FAIL(testSetup(&appArgs, &testInfo));
 
-    PROPAGATE_ERROR_FAIL(run(appArgs, &testInfo));
+    PROPAGATE_ERROR_FAIL(run(&appArgs, &testInfo, &loadableNames));
 
 fail:
     return e;
 }
 
-// This is the entry point to the application
+static void printHelp(char* argv[]) {
+        NvDlaDebugPrintf("Usage: %s [-options] --parts <int> (--loadable <loadable_file>)+\n", argv[0]);
+        NvDlaDebugPrintf("where options include:\n");
+        NvDlaDebugPrintf("    -h                    print this help message\n");
+        NvDlaDebugPrintf("    -s                    launch test in server mode\n");
+        NvDlaDebugPrintf("    --image <file>        input jpg/pgm file\n");
+        NvDlaDebugPrintf("    --normalize <value>   normalize value for input image\n");
+        NvDlaDebugPrintf("    --mean <value>        comma separated mean value for input image\n");
+        NvDlaDebugPrintf("    --rawdump             dump raw dimg data\n");
+        NvDlaDebugPrintf("    --parts <int>         number of loadables\n");
+}
+
 int main(int argc, char* argv[])
 {
+    NvDlaDebugPrintf("Slimmable Neural Network on NVDLA Runtime (Single-UMD) Version 2.4\n");
+
+    NvDlaDebugPrintf("Beginning test...\n");
     NvDlaError e = NvDlaError_TestApplicationFailed;
-    TestAppArgs testAppArgs = defaultTestAppArgs;
+    int num_loadables = 0;
     bool showHelp = false;
     bool unknownArg = false;
     bool missingArg = false;
     bool inputPathSet = false;
     bool serverMode = false;
     NVDLA_UNUSED(inputPathSet);
+    NvDlaDebugPrintf("Initialised variables\nDoing first pass on arguments\n");
 
+    // First pass to check for how many loadables we have
     NvS32 ii = 1;
-    while(true)
+    while (true)
     {
-        if (ii >= argc)
+        if (ii >= argc) 
             break;
 
         const char* arg = argv[ii];
 
-        if (std::strcmp(arg, "-h") == 0) // help
+        if (std::strcmp(arg, "--parts") == 0)
         {
-            // Print usage
+            if (ii+1 >= argc) // Check that there is another parameter
+            {
+                showHelp = true;
+                break;
+            }
+
+            num_loadables = atoi(argv[++ii]);
+        }
+
+        ii++;
+    }
+
+    if (num_loadables == 0) 
+    {
+        showHelp = true;
+        missingArg = true;
+
+        printHelp(argv);
+
+        if (unknownArg || missingArg)
+            return EXIT_FAILURE;
+        else
+            return EXIT_SUCCESS;
+    }
+
+    NvDlaDebugPrintf("Number of loadables: %d\n", num_loadables);
+    
+    std::vector<std::string> loadableNames = std::vector<std::string>(num_loadables);
+    TestAppArgs tAA = defaultTestAppArgs;
+
+    NvDlaDebugPrintf("Initialised testAppArgs\nBeginning second pass on arguments...\n");
+    
+    // Second pass to set up the testAppArgs
+    ii = 1;
+    int loadable_counter = 0;
+    while (true)
+    {
+        NvDlaDebugPrintf("ii: %d, arg: %s\n", ii, argv[ii]);
+        if (ii >= argc)
+            break;
+        
+        const char* arg = argv[ii];
+        
+        if (std::strcmp(arg, "-h") == 0)
+        {
             showHelp = true;
             break;
         }
-        if (std::strcmp(arg, "-s") == 0) // server mode
+        if(std::strcmp(arg, "-s") == 0)
         {
-            // Print usage
             serverMode = true;
             break;
         }
-        else if (std::strcmp(arg, "-i") == 0) // input path
+        else if (std::strcmp(arg, "-i") == 0)
         {
             if (ii+1 >= argc)
             {
-                // Expecting another parameter
+                NvDlaDebugPrintf("[ERROR] No input path provided\n");
                 showHelp = true;
                 break;
             }
 
-            testAppArgs.inputPath = std::string(argv[++ii]);
+            tAA.inputPath = std::string(argv[++ii]);
             inputPathSet = true;
         }
-        else if (std::strcmp(arg, "--image") == 0) // imagename
+        else if (std::strcmp(arg, "--image") == 0)
         {
             if (ii+1 >= argc)
             {
-                // Expecting another parameter
+                NvDlaDebugPrintf("[ERROR] No image name provided\n");
                 showHelp = true;
                 break;
             }
 
-            testAppArgs.inputName = std::string(argv[++ii]);
+            tAA.inputName = std::string(argv[++ii]);
         }
         else if (std::strcmp(arg, "--loadable") == 0)
         {
             if (ii+1 >= argc)
             {
-                // Expecting another parameter
+                NvDlaDebugPrintf("[ERROR] No loadable name provided for %d\n", loadable_counter);
                 showHelp = true;
                 break;
             }
 
-            testAppArgs.loadableName = std::string(argv[++ii]);
+            ii++;
+
+            NvDlaDebugPrintf("Loadable name: %s\n", argv[ii]);
+
+            if (loadable_counter == 0)
+            {
+                tAA.loadableName = std::string(argv[ii]);
+            }
+            loadableNames[loadable_counter] = std::string(argv[ii]);
+            loadable_counter++;
         }
-        else if (std::strcmp(arg, "--normalize") == 0) // normalize value
+        else if (std::strcmp(arg, "--normalize") == 0)
         {
             if (ii+1 >= argc)
             {
-                // Expecting another parameter
                 showHelp = true;
                 break;
             }
 
-            testAppArgs.normalize_value = atoi(argv[++ii]);
-        }
-        else if (std::strcmp(arg, "--mean") == 0) // Mean
-        {
-            if (ii+1 >= argc)
-            {
-                // Expecting another parameter
-                showHelp = true;
-                break;
-            }
             char *token;
             int i = 0;
+            NvDlaDebugPrintf("STD values provided\n");
             token = strtok(argv[++ii], ",\n");
-            while( token != NULL ) {
+
+            while (token != NULL)
+            {
+                if (i > 3) {
+                    NvDlaDebugPrintf("Number of STD values should not be greater than 4 \n");
+                    showHelp = true;
+                    break;
+                }
+
+                tAA.normalize_value[i] = atof(token);
+
+                token = strtok(NULL, ",\n");
+                i++;
+            }
+        }
+        else if (std::strcmp(arg, "--mean") == 0)
+        {
+            if (ii+1 >= argc)
+            {
+                showHelp = true;
+                break;
+            }
+
+            char *token;
+            int i = 0;
+            NvDlaDebugPrintf("Mean values provided\n");
+            token = strtok(argv[++ii], ",\n");
+
+            while (token != NULL)
+            {
                 if (i > 3) {
                     NvDlaDebugPrintf("Number of mean values should not be greater than 4 \n");
                     showHelp = true;
                     break;
                 }
-                testAppArgs.mean[i] = atof(token);
+                
+                tAA.mean[i] = atof(token);
+
                 token = strtok(NULL, ",\n");
                 i++;
             }
         }
         else if (std::strcmp(arg, "--rawdump") == 0)
         {
-            testAppArgs.rawOutputDump = true;
+            NvDlaDebugPrintf("Raw output dump enabled\n");
+            tAA.rawOutputDump = true;
         }
-        else // unknown
+        else if (std::strcmp(arg, "--parts") == 0)
         {
-            // Unknown argument
+            ii++;
+        }
+        else
+        {
+            NvDlaDebugPrintf("Unknown argument: %s\n", arg);
             unknownArg = true;
             showHelp = true;
             break;
@@ -204,22 +282,39 @@ int main(int argc, char* argv[])
         ii++;
     }
 
-    /* Check if any mandatory arguments are missing */
-    if (strcmp(testAppArgs.loadableName.c_str(), "") == 0 && !serverMode) {
+    if (num_loadables != loadable_counter)
+    {
         showHelp = true;
         missingArg = true;
     }
 
+    // Get details of each
+    NvDlaDebugPrintf("Test App Args\n");
+    NvDlaDebugPrintf("Input path: %s\n", tAA.inputPath.c_str());
+    NvDlaDebugPrintf("Input name: %s\n", tAA.inputName.c_str());
+    NvDlaDebugPrintf("Loadable name: %s\n", tAA.loadableName.c_str());
+    NvDlaDebugPrintf("STD values: %f, %f, %f, %f\n", tAA.normalize_value[0], tAA.normalize_value[1], tAA.normalize_value[2], tAA.normalize_value[3]);
+    NvDlaDebugPrintf("Mean values: %f, %f, %f, %f\n", tAA.mean[0], tAA.mean[1], tAA.mean[2], tAA.mean[3]);
+    NvDlaDebugPrintf("Raw output dump: %d\n", tAA.rawOutputDump);
+    NvDlaDebugPrintf("Loadable names: \n");
+    for (int i = 0; i < num_loadables; i++)
+    {
+        NvDlaDebugPrintf("%s\n", loadableNames[i].c_str());
+    }
+
+    NvDlaDebugPrintf("Finished second pass on arguments\nCorrect number of loadables provided\n");
+
+    for (int i = 0; i < num_loadables; i++) {
+        if (strcmp(loadableNames[i].c_str(), "") == 0) {
+            showHelp = true;
+            missingArg = true;
+            break;
+        }
+    }
+
     if (showHelp)
     {
-        NvDlaDebugPrintf("Usage: %s [-options] --loadable <loadable_file>\n", argv[0]);
-        NvDlaDebugPrintf("where options include:\n");
-        NvDlaDebugPrintf("    -h                    print this help message\n");
-        NvDlaDebugPrintf("    -s                    launch test in server mode\n");
-        NvDlaDebugPrintf("    --image <file>        input jpg/pgm file\n");
-        NvDlaDebugPrintf("    --normalize <value>   normalize value for input image\n");
-        NvDlaDebugPrintf("    --mean <value>        comma separated mean value for input image\n");
-        NvDlaDebugPrintf("    --rawdump             dump raw dimg data\n");
+        printHelp(argv);
 
         if (unknownArg || missingArg)
             return EXIT_FAILURE;
@@ -227,14 +322,17 @@ int main(int argc, char* argv[])
             return EXIT_SUCCESS;
     }
 
+    NvDlaDebugPrintf("No help required\nBeginning test...\n");
+
     if (serverMode)
     {
-        e = launchServer(&testAppArgs);
+        NvDlaDebugPrintf("Server functionality not implemented\n");
+        return EXIT_FAILURE;
+        // e = launchServer(&tAAvec);
     }
     else
     {
-        // Launch
-        e = launchTest(&testAppArgs);
+        e = launchTest(tAA, loadableNames);
     }
 
     if (e != NvDlaSuccess)

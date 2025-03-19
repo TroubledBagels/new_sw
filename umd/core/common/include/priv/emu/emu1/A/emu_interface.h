@@ -29,7 +29,7 @@
 #ifndef NVDLA_PRIV_EMU_EMU1_A_EMU_INTERFACE_H
 #define NVDLA_PRIV_EMU_EMU1_A_EMU_INTERFACE_H
 
-#define NVDLA_EMU_MAX_BUFFERS_PER_TASK (6144)
+#define NVDLA_EMU_MAX_BUFFERS_PER_TASK (30000)
 
 /**
  * @name Op Type
@@ -38,6 +38,7 @@
  */
 #define NVDLA_EMU_OP_POWER    0
 #define NVDLA_EMU_OP_SOFTMAX  1
+#define NVDLA_EMU_OP_LOG      2
 /** @} */
 
 /**
@@ -91,10 +92,16 @@ struct emu_softmax_op_desc
     NvU8 axis;
 } __attribute__ ((packed, aligned(4)));
 
+struct emu_log_op_desc
+{
+    emu_common_op_desc common;
+} __attribute__ ((packed, aligned(4)));
+
 union emu_operation_container
 {
     struct emu_power_op_desc power_op;
     struct emu_softmax_op_desc softmax_op;
+    struct emu_log_op_desc log_op;
 };
 
 struct emu_buffer_desc
@@ -130,10 +137,18 @@ struct emu_softmax_buffer_descs
     struct emu_buffer_desc dst_data;
 } __attribute__ ((packed, aligned(4)));
 
+struct emu_log_buffer_descs
+{
+    /* Buffer Descriptors */
+    struct emu_buffer_desc src_data;
+    struct emu_buffer_desc dst_data;
+} __attribute__ ((packed, aligned(4)));
+
 union emu_operation_buffer_container
 {
     struct emu_power_buffer_descs power_buffers;
     struct emu_softmax_buffer_descs softmax_buffers;
+    struct emu_log_buffer_descs log_buffers;
 };
 
 

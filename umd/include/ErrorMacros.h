@@ -52,6 +52,7 @@ const char* NvDlaUtilsGetNvErrorString(NvDlaError e);
  *  2) Define NVDLA_UTILS_LOG_ERROR to point to a custom error logging function within the
  *     client. The signature for this macro should be the same as the default, below.
  */
+#define NVDLA_UTILS_ERROR_TAG "nvdla_utils"
 #if defined (NVDLA_UTILS_ERROR_TAG)
 // Use the default NvDlaUtilsLogError with the client tag appended.
 void NvDlaUtilsLogError(const char* tag, const char* path, NvDlaError e, const char* file, const char* func,
@@ -60,6 +61,8 @@ void NvDlaUtilsLogError(const char* tag, const char* path, NvDlaError e, const c
 #define NVDLA_UTILS_ERROR_PATH "nvidia/tegra/cv/dla/"
 #endif
 
+#undef NVDLA_UTILS_LOG_ERROR
+#if !defined (NVDLA_UTILS_LOG_ERROR)
 #define NVDLA_UTILS_LOG_ERROR(_err, _file, _func, _line, _propagating, _format, ...) \
     do { \
         NvDlaUtilsLogError(NVDLA_UTILS_ERROR_TAG, NVDLA_UTILS_ERROR_PATH, \
@@ -441,3 +444,4 @@ void NvDlaUtilsLogError(const char* tag, const char* path, NvDlaError e, const c
 #endif // __cplusplus
 
 #endif // NVDLA_UTILS_ERROR_MACROS_H
+#endif

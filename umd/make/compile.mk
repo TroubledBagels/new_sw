@@ -60,7 +60,7 @@ $(MODULE_COBJS): $(BUILDDIR)/%.o: %.c $(SRCDEPS)
 $(MODULE_CPPOBJS): $(BUILDDIR)/%.o: %.cpp $(SRCDEPS)
 	@$(MKDIR)
 	@echo compiling $<
-	$(MODULE_CC) $(MODULE_OPTFLAGS) $(MODULE_COMPILEFLAGS) $(MODULE_CPPFLAGS) $(INCLUDES) $(MODULE_INCLUDES) -c $< -MD -MT $@ -MF $(@:%o=%d) -o $@
+	$(MODULE_CC) $(MODULE_OPTFLAGS) $(MODULE_COMPILEFLAGS) $(MODULE_CPPFLAGS) -std=c++11 $(INCLUDES) $(MODULE_INCLUDES) -c $< -MD -MT $@ -MF $(@:%o=%d) -o $@
 
 # clear some variables we set here
 MODULE_CSRCS :=

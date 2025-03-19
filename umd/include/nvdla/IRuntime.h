@@ -32,7 +32,7 @@
 #include "dlaerror.h"
 #include "dlatypes.h"
 
-#include "nvdla/IType.h"
+#include "../../core/include/nvdla/IType.h"
 
 namespace nvdla
 {

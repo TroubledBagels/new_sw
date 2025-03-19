@@ -25,8 +25,9 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ROOT := $(TOP)
+$(info ROOT $(ROOT))
 
-TOOLCHAIN_PREFIX ?=
+TOOLCHAIN_PREFIX ?= aarch64-linux-gnu-
 
 ifeq ($(TOOLCHAIN_PREFIX),)
 $(error Toolchain prefix missing)
@@ -52,4 +53,4 @@ include rules.mk
 # the logic to compile and link stuff is in here
 $(TEST_BIN): $(ALLMODULE_OBJS) $(SHARED_LIBS)
 	@echo building $(MODULE)  $@
-	$(TOOLCHAIN_PREFIX)g++ $(ALLMODULE_OBJS) -pthread -L$(ROOT)/external/ -ljpeg -L$(BUILDOUT)/libnvdla_runtime -lnvdla_runtime -o $@ -Wl,-rpath=.
+	$(TOOLCHAIN_PREFIX)g++ $(ALLMODULE_OBJS) -pthread -std=c++11 -L$(ROOT)/external/ -ljpeg -L$(BUILDOUT)/libnvdla_runtime -lnvdla_runtime -o $@ -Wl,-rpath=.

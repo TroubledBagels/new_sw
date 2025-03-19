@@ -35,6 +35,8 @@
 #include <dlaerror.h>
 #include <dlatypes.h>
 
+#include <vector>
+
 class NvDlaImage
 {
 public:
@@ -127,6 +129,8 @@ public:
     NvDlaError deserialize(std::stringstream& sstream);
     NvDlaError packData(std::stringstream& sstream, bool stableHash, bool asRaw) const;
     NvDlaError unpackData(std::stringstream& sstream);
+
+    NvDlaError to_float(std::vector<NvF32>* outVec) const;
 };
 
 #endif // NVDLA_UTILS_DLAIMAGE_H

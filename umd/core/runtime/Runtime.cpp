@@ -587,7 +587,9 @@ bool Runtime::fillEMUTaskAddressList(Task *task, EMUTaskDescAccessor taskDescAcc
 bool Runtime::submit()
 {
     NvDlaError e = NvDlaSuccess;
+    NvDlaDebugPrintf("Beginning Submit...");
     e = submitInternal();
+    NvDlaDebugPrintf("Submit Successful!");
     return e == NvDlaSuccess;
 }
 
@@ -600,6 +602,7 @@ NvDlaError Runtime::submitInternal()
     size_t ii;
     size_t num_emu_instances;
 
+    NvDlaDebugPrintf("Checking if loaded...");
     bool ok = true;
     NVDLA_UNUSED(ok);
     if ( !m_loaded ) {
@@ -614,6 +617,7 @@ NvDlaError Runtime::submitInternal()
         ORIGINATE_ERROR_FAIL(NvDlaError_InvalidState, "no submission sets to exec");
     }
 
+    NvDlaDebugPrintf("Loading memory...");
     // Force reload dependency graph contents from the loadable to
     // satisfy firmware requirements
     for ( size_t mi = 0, MI = m_memory_entries.size(); mi != MI; ++mi )
@@ -633,7 +637,7 @@ NvDlaError Runtime::submitInternal()
     }
 
     num_emu_instances = 1;
-
+    NvDlaDebugPrintf("Submitting tasks...");
     for ( size_t ss=0; ss < m_submit.size(); ss++ ) {
 
         size_t emu_instance = 0;
@@ -652,6 +656,7 @@ NvDlaError Runtime::submitInternal()
 
                 case ILoadable::Interface_DLA1:
                 {
+                    NvDlaDebugPrintf("Submitting DLA task...");
                     void *dev;
                     NvDlaTask dla_task;
 
@@ -663,11 +668,13 @@ NvDlaError Runtime::submitInternal()
 
                     fillTaskAddressList(task, &dla_task);
 
+                    NvDlaDebugPrintf("Submitting DLA task to instance %d", m_loaded_instance);
                     PROPAGATE_ERROR_FAIL( NvDlaSubmit(NULL, dev, &dla_task, 1) );
                 }
                 break;
                 case ILoadable::Interface_EMU1:
                 {
+                    NvDlaDebugPrintf("Submitting EMU task...");
                     EMUInterface *emu_if = new EMUInterfaceA();
 
                     NvU8* task_mem = new NvU8[emu_if->taskDescAccessor(0).struct_size()];
@@ -692,6 +699,7 @@ NvDlaError Runtime::submitInternal()
 
                     fillEMUTaskAddressList(task, *(emu_task_descs.back()));
 
+                    NvDlaDebugPrintf("Submitting EMU task to instance %d", emu_instance);
                     PROPAGATE_ERROR_FAIL( m_emu_engine->submit(task_mem, 1) );
 
                     emu_instance = (emu_instance + 1) % num_emu_instances;

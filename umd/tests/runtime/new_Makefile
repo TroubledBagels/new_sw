@@ -1,0 +1,33 @@
+CXX = aarch64-linux-gnu-g++
+CC = aarch64-linux-gnu-gcc
+
+CXXFLAGS = -std=c++11 -Wall -Wextra -O2 -g -I../../include
+CFLAGS = -Wall -Wextra -O2 -g -I../../include
+LDFLAGS =
+LDFLAGS += -pthread -lpthread
+INCLUDES = -I.
+
+SRCS_C = ../../port/linux/nvdla_os.c 
+SRCS_CPP = main_snn.cpp 
+OBJS = $(SRCS_CPP:.cpp=.o) $(SRCS_C:.c=.o)
+
+TARGET = snn_runtime
+
+all: $(TARGET)
+
+.PHONY: all clean
+
+$(TARGET): $(OBJS)
+	$(CXX) $(LDFLAGS) $(OBJS) -o $(TARGET)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+../../core/common/ErrorLogging.o: ../../core/common/ErrorLogging.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJS) $(TARGET)

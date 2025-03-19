@@ -27,7 +27,10 @@
  */
 
 #include "ErrorMacros.h"
+#ifndef RUNTIME_TEST_H
+#define RUNTIME_TEST_H
 #include "RuntimeTest.h"
+#endif
 
 #include "main.h"
 
@@ -182,9 +185,29 @@ NvDlaError createFF16ImageCopy(const TestAppArgs* appArgs, NvDlaImage* in, NvDla
 
                 NvU8* inp = ibuf + ioffset;
                 half_float::half* outp = reinterpret_cast<half_float::half*>(obuf + ooffset);
-                *outp = half_float::half((float(*inp) - float(appArgs->mean[z]))/appArgs->normalize_value);
+                if (appArgs->normalize_value[z] == 0)
+                    *outp = half_float::half(float(*inp));
+                else
+                    *outp = half_float::half(((float(*inp)/255.0) - float(appArgs->mean[z]))/appArgs->normalize_value[z]);
+                // *outp = half_float::half(((float(*inp)/255.0) - float(appArgs->mean[z]))/appArgs->normalize_value[z]);
             }
         }
+    }
+
+    // Print first 10 elements of the first row
+    if (1) {
+        for (NvU32 x=0; x < 10; x++)
+        {
+            NvDlaDebugPrintf("[");
+            for (NvU32 z=0; z < in->m_meta.channel; z++)
+            {
+                NvS32 ooffset = out->getAddrOffset(x, 0, z);
+                half_float::half* outp = reinterpret_cast<half_float::half*>(obuf + ooffset);
+                NvDlaDebugPrintf(" %f", float(*outp));
+            }
+            NvDlaDebugPrintf("]\n");
+        }
+        NvDlaDebugPrintf("\n");
     }
 
     return NvDlaSuccess;

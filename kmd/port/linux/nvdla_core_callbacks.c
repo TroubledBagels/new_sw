@@ -315,6 +315,7 @@ int32_t nvdla_task_submit(struct nvdla_device *nvdla_dev, struct nvdla_task *tas
 	pr_debug("Wait for task complete\n");
 
 	while (1) {
+        dla_info("In task-complete-wait loop\n");
 		unsigned long flags;
 
 		wait_for_completion(&nvdla_dev->event_notifier);
@@ -329,8 +330,12 @@ int32_t nvdla_task_submit(struct nvdla_device *nvdla_dev, struct nvdla_task *tas
 			break;
 	}
 
+    dla_info("Task complete\n");
+
 	pr_debug("Task complete\n");
 	dla_clear_task(nvdla_dev->engine_context);
+
+    dla_info("Task cleared\n");
 
 	return err;
 }
@@ -395,6 +400,8 @@ static int32_t nvdla_probe(struct platform_device *pdev)
 
 	dla_register_driver(&nvdla_dev->engine_context, (void *)nvdla_dev);
 	dla_clear_task(nvdla_dev->engine_context);
+
+    dla_info("Task cleared\n");
 
 	err = nvdla_drm_probe(nvdla_dev);
 	if (err)

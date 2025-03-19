@@ -42,6 +42,12 @@
 // for class EMUOpType::SOFTMAX, ...
 #define EMU_OP_TYPE_ENUMS(op)               \
     op(POWER, 0U)                           \
-    op(SOFTMAX, 1U)
+    op(SOFTMAX, 1U)                         \
+    op(LOG, 2U)
+
+#define ENUM_MACRO(x, y) x = y,
+
+enum class EMUBufferType { EMU_BUFFER_TYPE_ENUMS(ENUM_MACRO) };
+enum class EMUOpType { EMU_OP_TYPE_ENUMS(ENUM_MACRO) };
 
 #endif // NVDLA_PRIV_EMU_INTERFACE_ENUMS_H

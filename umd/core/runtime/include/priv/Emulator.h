@@ -66,6 +66,7 @@ protected:
 
     bool executePower(EMUPowerOpDescAccessor opDesc, EMUPowerBufferDescsAccessor bufDescs, std::vector<NvU8*> addressList);
     bool executeSoftmax(EMUSoftmaxOpDescAccessor opDesc, EMUSoftmaxBufferDescsAccessor bufDescs, std::vector<NvU8*> addressList);
+    bool executeLog(EMULogOpDescAccessor opDesc, EMULogBufferDescsAccessor bufDescs, std::vector<NvU8*> addressList);
 
 private:
     std::queue<NvU8*> m_taskQueue;

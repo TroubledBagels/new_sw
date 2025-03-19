@@ -1,4 +1,4 @@
-# NVDLA Open Source Software
+# NVDLA Open Source Software - Edited for SlimNNs
 
 ## NVDLA
 

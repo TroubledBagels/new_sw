@@ -424,9 +424,11 @@ static NvDlaError executeTest(const TestAppArgs* appArgs, TestInfo *testInfo)
 {
     NvDlaError e = NvDlaSuccess;
 
+    std::vector<std::string> loadableNames;
+
     NvDlaDebugPrintf("Executing the Test...\n");
 
-    e = run(appArgs, testInfo);
+    e = run(appArgs, testInfo, &loadableNames);
     if (e == NvDlaSuccess)
         prepareReplyMsg("[OK] Test PASSED!");
     else
@@ -437,7 +439,7 @@ static NvDlaError executeTest(const TestAppArgs* appArgs, TestInfo *testInfo)
     /* Send the test completion message */
     NvDlaDebugPrintf("Sending test completion message: {%s}\n", replyMsg);
 
-    PROPAGATE_ERROR_FAIL(send(appArgs, testInfo, (void*)replyMsg, strlen(replyMsg)));
+    // PROPAGATE_ERROR_FAIL(send(appArgs, testInfo, (void*)replyMsg, strlen(replyMsg)));
 
 fail:
     return e;
@@ -447,7 +449,7 @@ static NvDlaError processRunFlatbuf(const TestAppArgs* appArgs, TestInfo *testIn
 {
     NvDlaError e = NvDlaSuccess;
 
-    PROPAGATE_ERROR_FAIL(executeTest(appArgs, testInfo));
+    // PROPAGATE_ERROR_FAIL(executeTest(appArgs, testInfo));
 
 fail:
     return e;
@@ -494,7 +496,7 @@ static NvDlaError processRunImage(const TestAppArgs* appArgs, TestInfo* testInfo
     imgFile.write((const char*)buf, len);
     imgFile.close();
 
-    PROPAGATE_ERROR_FAIL(executeTest(appArgs, testInfo));
+    // PROPAGATE_ERROR_FAIL(executeTest(appArgs, testInfo));
 
 fail:
     if (buf != NULL)

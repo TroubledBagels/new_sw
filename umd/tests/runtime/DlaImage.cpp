@@ -32,6 +32,7 @@
 #include "half.h"
 
 #include <stdio.h> // snprintf
+#include <vector>
 
 const NvU32 NvDlaImage::ms_version = 0;
 
@@ -259,6 +260,103 @@ NvDlaError NvDlaImage::deserialize(std::stringstream& sstream)
     return NvDlaSuccess;
 }
 
+NvDlaError NvDlaImage::to_float(std::vector<NvF32>* outVec) const
+{
+    NvDlaError e = NvDlaSuccess;
+    std::vector<NvF32> floatData;
+    PixelFormatType pftype = getPixelFormatType();
+    char* buf = reinterpret_cast<char*>(m_pData);
+
+    NvS8 bpe = getBpe();
+    if (bpe <= 0)
+        ORIGINATE_ERROR(NvDlaError_BadParameter, "Invalid bytes per element %d", bpe);
+    
+    if (pftype == UNKNOWN)
+        ORIGINATE_ERROR(NvDlaError_BadParameter, "Unknown pixel format type %u\n", pftype);
+    
+    for (NvU32 c = 0; c < m_meta.channel; c++) 
+    {
+        for (NvU32 y = 0; y < m_meta.height; y++) 
+        {
+            for (NvU32 x = 0; x < m_meta.width; x++)
+            {
+                NvS32 offset = getAddrOffset(x, y, c);
+                if (offset < 0)
+                    ORIGINATE_ERROR(NvDlaError_BadValue, "Invalid getAddrOffset() => %d\n", offset);
+                
+                float value = 0.0f;
+
+                if (pftype == IEEEFP)
+                {
+                    if (bpe == 2)
+                    {
+                        half_float::half tmp = *(reinterpret_cast<half_float::half*>(buf + offset));
+
+                        if (tmp == 0x8000)
+                            tmp = 0x0000;
+                        else if (std::isnan(static_cast<NvF32>(tmp)))
+                            tmp = 0x7C00;
+                        
+                        value = static_cast<NvF32>(tmp);
+                    }
+                    else if (bpe == 4)
+                    {
+                        value = *(reinterpret_cast<NvF32*>(buf + offset));
+
+                        if (value == -0.0f)
+                            value = 0.0f;
+                        else if (std::isnan(value))
+                            value = std::numeric_limits<float>::quiet_NaN();
+                    }
+                    else
+                    {
+                        ORIGINATE_ERROR(NvDlaError_NotSupported, "Unspported FP type");
+                    }
+                }
+                else if (pftype == UINT)
+                {
+                    unsigned int tmp = 0;
+                    if (bpe == 1)
+                        tmp = *(reinterpret_cast<NvU8*>(buf + offset));
+                    else if (bpe == 2)
+                        tmp = *(reinterpret_cast<NvU16*>(buf + offset));
+                    else if (bpe == 4)
+                        tmp = *(reinterpret_cast<NvU32*>(buf + offset));
+                    else
+                        ORIGINATE_ERROR(NvDlaError_NotSupported, "Unspported UINT type");
+                    
+                    value = static_cast<NvF32>(tmp);
+                }
+                else if (pftype == INT)
+                {
+                    int tmp = 0;
+
+                    if (bpe == 1)
+                        tmp = *(reinterpret_cast<NvS8*>(buf + offset));
+                    else if (bpe == 2)
+                        tmp = *(reinterpret_cast<NvS16*>(buf + offset));
+                    else if (bpe == 4)
+                        tmp = *(reinterpret_cast<NvS32*>(buf + offset));
+                    else
+                        ORIGINATE_ERROR(NvDlaError_NotSupported, "Unspported INT type");
+                    
+                    value = static_cast<NvF32>(tmp);
+                }
+                else
+                {
+                    ORIGINATE_ERROR(NvDlaError_NotSupported, "Unspported type %u", pftype);
+                }
+
+                floatData.push_back(value);
+            }
+        }
+    }
+
+    *outVec = floatData;
+
+    return e;
+}
+
 NvDlaError NvDlaImage::packData(std::stringstream& sstream, bool stableHash, bool asRaw) const
 {
     NvS8 bpe = getBpe();
@@ -302,7 +400,7 @@ NvDlaError NvDlaImage::packData(std::stringstream& sstream, bool stableHash, boo
                                 // Push negative zeros to positive zeros
                                 tmp = 0x0000;
                             }
-                            else if (std::isnan(tmp))
+                            else if (std::isnan(static_cast<float>(tmp)))
                             {
                                 // Emit only one version of NaN
                                 tmp = 0x7C00;
@@ -322,7 +420,7 @@ NvDlaError NvDlaImage::packData(std::stringstream& sstream, bool stableHash, boo
                                 // Push negative zeros to positive zeros
                                 tmp = 0x0;
                             }
-                            else if (std::isnan(tmp))
+                            else if (std::isnan(static_cast<float>(tmp)))
                             {
                                 // Emit only one version of NaN
                                 tmp = 0x7FBFFFFF;

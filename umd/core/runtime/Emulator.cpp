@@ -186,18 +186,25 @@ bool Emulator::processTask(NvU8* task_mem, std::vector<NvU8*> addressList)
     EMUOperationBufferContainerAccessor operation_buffer_container_0 = emu_if->operationBufferContainerAccessor(addressList[*network_desc.operationBufferDescIndex()]);
     EMUCommonOpDescAccessor common_op_desc_0 = operation_container_0.softmaxOpDescAccessor(0).commonOpDescAccessor();
 
-    if (*common_op_desc_0.op_type() == 0 /* POWER */)
+    EMUOpType opType = (EMUOpType)*common_op_desc_0.op_type();
+    if (opType == EMUOpType::POWER)
     {
         EMUPowerOpDescAccessor power_op_desc = operation_container_0.powerOpDescAccessor(0);
         EMUPowerBufferDescsAccessor power_op_buffer_descs = operation_buffer_container_0.powerBufferDescsAccessor(0);
 
         executePower(power_op_desc, power_op_buffer_descs, addressList);
 
-    } else if (*common_op_desc_0.op_type() == 1 /* SOFTMAX */) {
+    } else if (opType == EMUOpType::SOFTMAX) {
         EMUSoftmaxOpDescAccessor softmax_op_desc = operation_container_0.softmaxOpDescAccessor(0);
         EMUSoftmaxBufferDescsAccessor softmax_op_buffer_descs = operation_buffer_container_0.softmaxBufferDescsAccessor(0);
 
         executeSoftmax(softmax_op_desc, softmax_op_buffer_descs, addressList);
+
+    } else if (opType == EMUOpType::LOG) {
+        EMULogOpDescAccessor log_op_desc = operation_container_0.logOpDescAccessor(0);
+        EMULogBufferDescsAccessor log_op_buffer_descs = operation_buffer_container_0.logBufferDescsAccessor(0);
+
+        executeLog(log_op_desc, log_op_buffer_descs, addressList);
 
     } else {
         NvDlaDebugPrintf("Unknown op type %u\n", *common_op_desc_0.op_type());
@@ -321,6 +328,77 @@ bool Emulator::executeSoftmax(EMUSoftmaxOpDescAccessor opDesc, EMUSoftmaxBufferD
     return true;
 }
 
+
+bool Emulator::executeLog(EMULogOpDescAccessor opDesc, EMULogBufferDescsAccessor bufDescs, std::vector<NvU8*> addressList)
+{
+    EMUBufferDescAccessor src = bufDescs.srcDataAccessor();
+    EMUBufferDescAccessor dst = bufDescs.dstDataAccessor();
+
+    if ( debugOps() )
+    {
+        NvDlaDebugPrintf("Processing log\n");
+        NvDlaDebugPrintf("src format %u\n", *src.format());
+        NvDlaDebugPrintf("\taddress[%u] 0x%llx (%ux%ux%u) %uB\n", *src.addressIndex(), addressList[*src.addressIndex()], *src.width(), *src.height(), *src.channel(), *src.size());
+        NvDlaDebugPrintf("\tline_stride %uB surface_stride %uB\n", *src.lineStride(), *src.surfStride());
+
+        NvDlaDebugPrintf("dst format %u\n", *dst.format());
+        NvDlaDebugPrintf("\taddress[%u] 0x%llx (%ux%ux%u) %uB\n", *dst.addressIndex(), addressList[*dst.addressIndex()], *dst.width(), *dst.height(), *dst.channel(), *dst.size());
+        NvDlaDebugPrintf("\tline_stride %uB surface_stride %uB\n", *dst.lineStride(), *dst.surfStride());
+    }
+
+    NvU8* pSrc = addressList[*src.addressIndex()];
+    NvU8* pDst = addressList[*dst.addressIndex()];
+
+    // Execute
+    for (NvU32 channel=0; channel<*src.channel(); channel++)
+    {
+        for (NvU32 height=0; height<*src.height(); height++)
+        {
+            for (NvU32 width=0; width<*src.width(); width++)
+            {
+                NvU32 srcoffset = 0;
+                NvU32 dstoffset = 0;
+                if (getAddrOffset(src, width, height, channel, &srcoffset) != NvDlaSuccess)
+                    return false;
+                if (getAddrOffset(dst, width, height, channel, &dstoffset) != NvDlaSuccess)
+                    return false;
+
+                EMUBufferType srcFormat = (EMUBufferType)*src.format();
+                EMUBufferType dstFormat = (EMUBufferType)*dst.format();
+                if (srcFormat == EMUBufferType::DLA_FEATURE_INT8_FORMAT &&
+                    dstFormat == EMUBufferType::DLA_FEATURE_INT8_FORMAT) {
+                    NvS8* srcint8 = reinterpret_cast<NvS8*>(pSrc + srcoffset);
+                    NvS8* dstint8 = reinterpret_cast<NvS8*>(pDst + dstoffset);
+
+                    NvF32 x = float(*srcint8);
+                    NvF32 y = rintf(logf(x));
+                    *dstint8 = (NvS8)y;
+                } else if (srcFormat == EMUBufferType::DLA_FEATURE_INT16_FORMAT &&
+                           dstFormat == EMUBufferType::DLA_FEATURE_INT16_FORMAT) {
+                    NvS16* srcint16 = reinterpret_cast<NvS16*>(pSrc + srcoffset);
+                    NvS16* dstint16 = reinterpret_cast<NvS16*>(pDst + dstoffset);
+
+                    NvF32 x = float(*srcint16);
+                    NvF32 y = rintf(logf(x));
+                    *dstint16 = (NvS16)y;
+                } else if (srcFormat == EMUBufferType::DLA_FEATURE_FP16_FORMAT &&
+                           dstFormat == EMUBufferType::DLA_FEATURE_FP16_FORMAT) {
+                    half_float::half* srchalfp = reinterpret_cast<half_float::half*>(pSrc + srcoffset);
+                    half_float::half* dsthalfp = reinterpret_cast<half_float::half*>(pDst + dstoffset);
+
+                    NvF32 x = float(*srchalfp);
+                    NvF32 y = logf(x);
+                    *dsthalfp = half(y);
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+
+
+    return true;
+}
 
 } // nvdla::priv
 } // nvdla

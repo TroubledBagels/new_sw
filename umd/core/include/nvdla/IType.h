@@ -35,7 +35,7 @@
 
 #include "dlaerror.h"
 
-#include "nvdla/c/NvDlaType.h"
+#include "c/NvDlaType.h"
 
 #define ENUM_CLASS_MEMBERS(ENUM_C)                                  \
 public:                                                             \
