@@ -28,10 +28,10 @@ enum TestImageTypes
     IMAGE_TYPE_UNKNOWN = 2,
 };
 
-NvDlaError launchTest(const TestAppArgs* appArgs, std::vector<std::string> loadableNames);
+NvDlaError launchTest(const TestAppArgs* appArgs);
 NvDlaError testSetup(const TestAppArgs* appArgs, TestInfo* i);
 
-NvDlaError run(const TestAppArgs* appArgs, TestInfo* i, std::vector<std::string> loadableNames);
+NvDlaError run(const TestAppArgs* appArgs, TestInfo* i);
 
 NvDlaError loadLoadable(const TestAppArgs* appArgs, TestInfo* i);
 NvDlaError setupBuffers(const TestAppArgs* appArgs, TestInfo* i);

@@ -60,7 +60,7 @@ fail:
     return e;
 }
 
-static NvDlaError launchTest(const TestAppArgs appArgs, std::vector<std::string> loadableNames)
+static NvDlaError launchTest(const TestAppArgs appArgs)
 {
     NvDlaError e = NvDlaSuccess;
     TestInfo testInfo;
@@ -68,7 +68,7 @@ static NvDlaError launchTest(const TestAppArgs appArgs, std::vector<std::string>
     testInfo.dlaServerRunning = false;
     PROPAGATE_ERROR_FAIL(testSetup(&appArgs, &testInfo));
 
-    PROPAGATE_ERROR_FAIL(run(&appArgs, &testInfo, &loadableNames));
+    PROPAGATE_ERROR_FAIL(run(&appArgs, &testInfo));
 
 fail:
     return e;
@@ -139,7 +139,6 @@ int main(int argc, char* argv[])
 
     NvDlaDebugPrintf("Number of loadables: %d\n", num_loadables);
     
-    std::vector<std::string> loadableNames = std::vector<std::string>(num_loadables);
     TestAppArgs tAA = defaultTestAppArgs;
 
     NvDlaDebugPrintf("Initialised testAppArgs\nBeginning second pass on arguments...\n");
@@ -201,11 +200,7 @@ int main(int argc, char* argv[])
 
             NvDlaDebugPrintf("Loadable name: %s\n", argv[ii]);
 
-            if (loadable_counter == 0)
-            {
-                tAA.loadableName = std::string(argv[ii]);
-            }
-            loadableNames[loadable_counter] = std::string(argv[ii]);
+            tAA.loadableNames.push_back(std::string(argv[ii]));
             loadable_counter++;
         }
         else if (std::strcmp(arg, "--normalize") == 0)
@@ -292,20 +287,19 @@ int main(int argc, char* argv[])
     NvDlaDebugPrintf("Test App Args\n");
     NvDlaDebugPrintf("Input path: %s\n", tAA.inputPath.c_str());
     NvDlaDebugPrintf("Input name: %s\n", tAA.inputName.c_str());
-    NvDlaDebugPrintf("Loadable name: %s\n", tAA.loadableName.c_str());
     NvDlaDebugPrintf("STD values: %f, %f, %f, %f\n", tAA.normalize_value[0], tAA.normalize_value[1], tAA.normalize_value[2], tAA.normalize_value[3]);
     NvDlaDebugPrintf("Mean values: %f, %f, %f, %f\n", tAA.mean[0], tAA.mean[1], tAA.mean[2], tAA.mean[3]);
     NvDlaDebugPrintf("Raw output dump: %d\n", tAA.rawOutputDump);
     NvDlaDebugPrintf("Loadable names: \n");
     for (int i = 0; i < num_loadables; i++)
     {
-        NvDlaDebugPrintf("%s\n", loadableNames[i].c_str());
+        NvDlaDebugPrintf("%s\n", tAA.loadableNames[i].c_str());
     }
 
     NvDlaDebugPrintf("Finished second pass on arguments\nCorrect number of loadables provided\n");
 
     for (int i = 0; i < num_loadables; i++) {
-        if (strcmp(loadableNames[i].c_str(), "") == 0) {
+        if (strcmp(tAA.loadableNames[i].c_str(), "") == 0) {
             showHelp = true;
             missingArg = true;
             break;
@@ -332,7 +326,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        e = launchTest(tAA, loadableNames);
+        e = launchTest(tAA);
     }
 
     if (e != NvDlaSuccess)

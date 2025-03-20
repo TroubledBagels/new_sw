@@ -103,7 +103,7 @@ fail:
     return e;
 }
 
-static NvDlaError readLoadable(const TestAppArgs* appArgs, TestInfo* i, std::string loadableName)
+static NvDlaError readLoadable(const TestAppArgs* appArgs, TestInfo* i, int loadableNum)
 {
     NvDlaError e = NvDlaSuccess;
     NVDLA_UNUSED(appArgs);
@@ -115,25 +115,25 @@ static NvDlaError readLoadable(const TestAppArgs* appArgs, TestInfo* i, std::str
     size_t actually_read = 0;
     NvDlaError rc;
 
-    if (loadableName == "")
+    if (appArgs->loadableNames.at(loadableNum) == "")
         ORIGINATE_ERROR_FAIL(NvDlaError_NotInitialized, "No loadable found to load");
 
-    rc = NvDlaFopen(loadableName.c_str(), NVDLA_OPEN_READ, &file);
+    rc = NvDlaFopen(appArgs->loadableNames.at(loadableNum).c_str(), NVDLA_OPEN_READ, &file);
     if (rc != NvDlaSuccess)
-        ORIGINATE_ERROR_FAIL(NvDlaError_BadParameter, "fopen failed for %s\n", loadableName.c_str());
+        ORIGINATE_ERROR_FAIL(NvDlaError_BadParameter, "fopen failed for %s\n", appArgs->loadableNames.at(loadableNum).c_str());
     
     rc = NvDlaFstat(file, &finfo);
     if (rc != NvDlaSuccess)
-        ORIGINATE_ERROR_FAIL(NvDlaError_BadParameter, "couldn't get file stats for %s\n", loadableName.c_str());
+        ORIGINATE_ERROR_FAIL(NvDlaError_BadParameter, "couldn't get file stats for %s\n", appArgs->loadableNames.at(loadableNum).c_str());
     
     file_size = NvDlaStatGetSize(&finfo);
     if (!file_size)
-        ORIGINATE_ERROR_FAIL(NvDlaError_BadParameter, "zero-length for %s\n", loadableName.c_str());
+        ORIGINATE_ERROR_FAIL(NvDlaError_BadParameter, "zero-length for %s\n", appArgs->loadableNames.at(loadableNum).c_str());
     
     buf = new NvU8[file_size];
 
     if (!buf)
-        ORIGINATE_ERROR_FAIL(NvDlaError_InsufficientMemory, "couldn't allocate buffer for %s\n", loadableName.c_str());
+        ORIGINATE_ERROR_FAIL(NvDlaError_InsufficientMemory, "couldn't allocate buffer for %s\n", appArgs->loadableNames.at(loadableNum).c_str());
 
     NvDlaFseek(file, 0, NvDlaSeek_Set);
 
@@ -141,7 +141,7 @@ static NvDlaError readLoadable(const TestAppArgs* appArgs, TestInfo* i, std::str
     if (rc != NvDlaSuccess)
     {
         NvDlaFree(buf);
-        ORIGINATE_ERROR_FAIL(NvDlaError_BadParameter, "read error for %s\n", loadableName.c_str());
+        ORIGINATE_ERROR_FAIL(NvDlaError_BadParameter, "read error for %s\n", appArgs->loadableNames.at(loadableNum).c_str());
     }
 
     NvDlaFclose(file);
@@ -447,7 +447,7 @@ fail:
     return e;
 }
 
-NvDlaError run(const TestAppArgs* tAA, TestInfo* testInfo, std::vector<std::string>* loadableVec)
+NvDlaError run(const TestAppArgs* tAA, TestInfo* testInfo)
 {
     NvDlaError e = NvDlaSuccess;
 
@@ -455,7 +455,7 @@ NvDlaError run(const TestAppArgs* tAA, TestInfo* testInfo, std::vector<std::stri
     bool final = false;
     NvF32 confidence = 0.0f;
     NvDlaDebugPrintf("creating new runtime contexts...\n");
-    for (int i = 0; i < loadableVec->size(); i++)
+    for (int i = 0; i < tAA->loadableNames.size(); i++)
     {
         NvDlaDebugPrintf("creating runtime context %d...\n", i);
         testInfo->runtime = nvdla::createRuntime();
@@ -463,9 +463,9 @@ NvDlaError run(const TestAppArgs* tAA, TestInfo* testInfo, std::vector<std::stri
         if (testInfo->runtime == NULL)  // Check context creation
             ORIGINATE_ERROR_FAIL(NvDlaError_BadParameter, "createRuntime() failed");
         
-        NvDlaDebugPrintf("loading runtime context %s...\n", loadableVec->at(i).c_str());
+        NvDlaDebugPrintf("loading runtime context %s...\n", tAA->loadableNames.at(i).c_str());
         if (!testInfo->dlaServerRunning)  // Check that server is not running
-            PROPAGATE_ERROR_FAIL(readLoadable(tAA, testInfo, loadableVec->at(i)));
+            PROPAGATE_ERROR_FAIL(readLoadable(tAA, testInfo, i));
         
         /* Load Loadable */
         PROPAGATE_ERROR_FAIL(loadLoadable(tAA, testInfo));
@@ -476,7 +476,7 @@ NvDlaError run(const TestAppArgs* tAA, TestInfo* testInfo, std::vector<std::stri
         
         NvDlaDebugPrintf("runtime context %d created\n", i);
 
-        if (i == loadableVec->size() - 1)
+        if (i == tAA->loadableNames.size() - 1)
         {
             final = true;
             NvDlaDebugPrintf("Final partition, at i=%d\n", i);
