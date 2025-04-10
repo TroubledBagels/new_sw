@@ -1,4 +1,4 @@
-/home/benjamin/Desktop/ONNC/sw/umd/out/runtime/libnvdla_runtime/Emulator.o: \
+/home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/out/runtime/libnvdla_runtime/Emulator.o: \
  Emulator.cpp /usr/aarch64-linux-gnu/include/stdc-predef.h \
  /usr/aarch64-linux-gnu/include/c++/5/queue \
  /usr/aarch64-linux-gnu/include/c++/5/deque \
@@ -54,7 +54,7 @@
  /usr/aarch64-linux-gnu/include/c++/5/backward/binders.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_queue.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/uses_allocator.h \
- /home/benjamin/Desktop/ONNC/sw/umd/external/include/half.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/external/include/half.h \
  /usr/aarch64-linux-gnu/include/c++/5/utility \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_relops.h \
  /usr/aarch64-linux-gnu/include/c++/5/algorithm \
@@ -191,9 +191,9 @@
  /usr/aarch64-linux-gnu/include/c++/5/typeinfo \
  /usr/aarch64-linux-gnu/include/c++/5/tuple \
  /usr/aarch64-linux-gnu/include/c++/5/array include/priv/Emulator.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/common/include/priv/EMUInterface.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/common/include/priv/EMUInterface.h \
  /usr/lib/gcc-cross/aarch64-linux-gnu/5/include/stdbool.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/common/include/priv/Type.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/common/include/priv/Type.h \
  /usr/aarch64-linux-gnu/include/c++/5/sstream \
  /usr/aarch64-linux-gnu/include/c++/5/bits/sstream.tcc \
  /usr/aarch64-linux-gnu/include/c++/5/map \
@@ -201,15 +201,15 @@
  /usr/aarch64-linux-gnu/include/c++/5/ext/aligned_buffer.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_map.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_multimap.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/include/nvdla/IType.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlaerror.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/include/nvdla/c/NvDlaType.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlatypes.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/common/include/priv/Check.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/common/include/priv/EMUInterfaceEnums.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla_os_inf.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/include/nvdla/IType.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlaerror.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/include/nvdla/c/NvDlaType.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlatypes.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/common/include/priv/Check.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/common/include/priv/EMUInterfaceEnums.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla_os_inf.h \
  /usr/aarch64-linux-gnu/include/dirent.h \
  /usr/aarch64-linux-gnu/include/bits/dirent.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlaerror.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlatypes.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/ErrorMacros.h
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlaerror.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlatypes.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/ErrorMacros.h

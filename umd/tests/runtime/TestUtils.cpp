@@ -189,7 +189,6 @@ NvDlaError createFF16ImageCopy(const TestAppArgs* appArgs, NvDlaImage* in, NvDla
                     *outp = half_float::half(float(*inp));
                 else
                     *outp = half_float::half(((float(*inp)/255.0) - float(appArgs->mean[z]))/appArgs->normalize_value[z]);
-                // *outp = half_float::half(((float(*inp)/255.0) - float(appArgs->mean[z]))/appArgs->normalize_value[z]);
             }
         }
     }

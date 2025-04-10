@@ -1,4 +1,4 @@
-/home/benjamin/Desktop/ONNC/sw/umd/out/runtime/nvdla_runtime/DlaImageUtils.o: \
+/home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/out/runtime/nvdla_runtime/DlaImageUtils.o: \
  DlaImageUtils.cpp /usr/aarch64-linux-gnu/include/stdc-predef.h \
  DlaImage.h /usr/lib/gcc-cross/aarch64-linux-gnu/5/include/stdbool.h \
  /usr/aarch64-linux-gnu/include/c++/5/sstream \
@@ -134,24 +134,24 @@
  /usr/aarch64-linux-gnu/include/c++/5/bits/ostream.tcc \
  /usr/aarch64-linux-gnu/include/c++/5/bits/istream.tcc \
  /usr/aarch64-linux-gnu/include/c++/5/bits/sstream.tcc \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlaerror.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlatypes.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlaerror.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlatypes.h \
  /usr/aarch64-linux-gnu/include/c++/5/vector \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_construct.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_uninitialized.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_vector.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_bvector.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/vector.tcc DlaImageUtils.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/ErrorMacros.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla_os_inf.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/ErrorMacros.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla_os_inf.h \
  /usr/aarch64-linux-gnu/include/dirent.h \
  /usr/aarch64-linux-gnu/include/bits/dirent.h \
  /usr/aarch64-linux-gnu/include/bits/posix1_lim.h \
  /usr/aarch64-linux-gnu/include/bits/local_lim.h \
  /usr/aarch64-linux-gnu/include/linux/limits.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlaerror.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlatypes.h \
- /home/benjamin/Desktop/ONNC/sw/umd/external/include/half.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlaerror.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlatypes.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/external/include/half.h \
  /usr/aarch64-linux-gnu/include/c++/5/utility \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_relops.h \
  /usr/aarch64-linux-gnu/include/c++/5/algorithm \
@@ -192,9 +192,9 @@
  /usr/aarch64-linux-gnu/include/c++/5/tuple \
  /usr/aarch64-linux-gnu/include/c++/5/array \
  /usr/aarch64-linux-gnu/include/c++/5/bits/uses_allocator.h \
- /home/benjamin/Desktop/ONNC/sw/umd/external/include/jpeglib.h \
- /home/benjamin/Desktop/ONNC/sw/umd/external/include/jconfig.h \
- /home/benjamin/Desktop/ONNC/sw/umd/external/include/jmorecfg.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/external/include/jpeglib.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/external/include/jconfig.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/external/include/jmorecfg.h \
  /usr/aarch64-linux-gnu/include/c++/5/fstream \
  /usr/aarch64-linux-gnu/include/c++/5/bits/codecvt.h \
  /usr/aarch64-linux-gnu/include/c++/5/aarch64-linux-gnu/bits/basic_file.h \

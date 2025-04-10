@@ -21,7 +21,7 @@ struct TestAppArgs
 {
     std::string inputPath;
     std::string inputName;
-    std::string loadableName;
+    std::vector<std::string> loadableNames;
     NvS32 serverPort;
     float normalize_value[4];
     float mean[4];
@@ -30,7 +30,7 @@ struct TestAppArgs
     TestAppArgs() :
         inputPath("./"),
         inputName(""),
-        loadableName(""),
+        loadableNames(),
         serverPort(6666),
         normalize_value{1.0, 1.0, 1.0, 1.0},
         mean{0.0, 0.0, 0.0, 0.0},
@@ -69,4 +69,4 @@ struct TestInfo
     {}
 };
 
-NvDlaError run(const TestAppArgs* tAA, TestInfo* testInfo, std::vector<std::string>* loadableVec);
+NvDlaError run(const TestAppArgs* tAA, TestInfo* testInfo);

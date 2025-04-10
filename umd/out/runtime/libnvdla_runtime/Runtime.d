@@ -1,4 +1,4 @@
-/home/benjamin/Desktop/ONNC/sw/umd/out/runtime/libnvdla_runtime/Runtime.o: \
+/home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/out/runtime/libnvdla_runtime/Runtime.o: \
  Runtime.cpp /usr/aarch64-linux-gnu/include/stdc-predef.h \
  /usr/aarch64-linux-gnu/include/c++/5/cstdio \
  /usr/aarch64-linux-gnu/include/c++/5/aarch64-linux-gnu/bits/c++config.h \
@@ -153,13 +153,13 @@
  /usr/aarch64-linux-gnu/include/c++/5/list \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_list.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/list.tcc \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlatypes.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlatypes.h \
  /usr/lib/gcc-cross/aarch64-linux-gnu/5/include/stdbool.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlaerror.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla_inf.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlaerror.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlatypes.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla_os_inf.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlaerror.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla_inf.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlaerror.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlatypes.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla_os_inf.h \
  /usr/aarch64-linux-gnu/include/dirent.h \
  /usr/aarch64-linux-gnu/include/bits/dirent.h \
  /usr/aarch64-linux-gnu/include/bits/posix1_lim.h \
@@ -177,8 +177,8 @@
  /usr/aarch64-linux-gnu/include/c++/5/bits/vector.tcc \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_heap.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_queue.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/common/include/priv/EMUInterface.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/common/include/priv/Type.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/common/include/priv/EMUInterface.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/common/include/priv/Type.h \
  /usr/aarch64-linux-gnu/include/c++/5/algorithm \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_algo.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/algorithmfwd.h \
@@ -202,19 +202,19 @@
  /usr/aarch64-linux-gnu/include/c++/5/bits/random.tcc \
  /usr/aarch64-linux-gnu/include/c++/5/numeric \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_numeric.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/include/nvdla/IType.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/include/nvdla/c/NvDlaType.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/common/include/priv/Check.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/include/nvdla/IType.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/include/nvdla/c/NvDlaType.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/common/include/priv/Check.h \
  /usr/aarch64-linux-gnu/include/c++/5/iostream \
- /home/benjamin/Desktop/ONNC/sw/umd/core/common/include/priv/EMUInterfaceEnums.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/common/include/priv/Loadable.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/include/nvdla/ILoadable.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/include/nvdla/c/NvDlaType.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/include/nvdla/c/NvDlaLoadable.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla/IRuntime.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla/../../core/include/nvdla/IType.h \
- /home/benjamin/Desktop/ONNC/sw/umd/core/common/include/priv/loadable_generated.h \
- /home/benjamin/Desktop/ONNC/sw/umd/external/include/flatbuffers/flatbuffers.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/common/include/priv/EMUInterfaceEnums.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/common/include/priv/Loadable.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/include/nvdla/ILoadable.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/include/nvdla/c/NvDlaType.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/include/nvdla/c/NvDlaLoadable.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla/IRuntime.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla/../../core/include/nvdla/IType.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/core/common/include/priv/loadable_generated.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/external/include/flatbuffers/flatbuffers.h \
  /usr/aarch64-linux-gnu/include/assert.h \
  /usr/aarch64-linux-gnu/include/c++/5/cstddef \
  /usr/aarch64-linux-gnu/include/c++/5/set \
@@ -233,4 +233,4 @@
  /usr/aarch64-linux-gnu/include/c++/5/bits/atomic_base.h \
  /usr/aarch64-linux-gnu/include/c++/5/backward/auto_ptr.h \
  include/priv/Runtime.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/ErrorMacros.h
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/ErrorMacros.h

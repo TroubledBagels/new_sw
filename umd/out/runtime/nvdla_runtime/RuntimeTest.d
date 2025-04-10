@@ -1,4 +1,4 @@
-/home/benjamin/Desktop/ONNC/sw/umd/out/runtime/nvdla_runtime/RuntimeTest.o: \
+/home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/out/runtime/nvdla_runtime/RuntimeTest.o: \
  RuntimeTest.cpp /usr/aarch64-linux-gnu/include/stdc-predef.h \
  DlaImageUtils.h /usr/lib/gcc-cross/aarch64-linux-gnu/5/include/stdbool.h \
  DlaImage.h /usr/aarch64-linux-gnu/include/c++/5/sstream \
@@ -134,17 +134,18 @@
  /usr/aarch64-linux-gnu/include/c++/5/bits/ostream.tcc \
  /usr/aarch64-linux-gnu/include/c++/5/bits/istream.tcc \
  /usr/aarch64-linux-gnu/include/c++/5/bits/sstream.tcc \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlaerror.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlatypes.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlaerror.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlatypes.h \
  /usr/aarch64-linux-gnu/include/c++/5/vector \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_construct.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_uninitialized.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_vector.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_bvector.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/vector.tcc \
- /home/benjamin/Desktop/ONNC/sw/umd/include/ErrorMacros.h RuntimeTest.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla/IRuntime.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla/../../core/include/nvdla/IType.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/ErrorMacros.h \
+ RuntimeTest.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla/IRuntime.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla/../../core/include/nvdla/IType.h \
  /usr/aarch64-linux-gnu/include/c++/5/map \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_tree.h \
  /usr/aarch64-linux-gnu/include/c++/5/ext/aligned_buffer.h \
@@ -155,10 +156,10 @@
  /usr/aarch64-linux-gnu/include/c++/5/array \
  /usr/aarch64-linux-gnu/include/c++/5/bits/uses_allocator.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_multimap.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla/../../core/include/nvdla/c/NvDlaType.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla_inf.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlaerror.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlatypes.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla/../../core/include/nvdla/c/NvDlaType.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla_inf.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlaerror.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlatypes.h \
  ../../external/include/half.h \
  /usr/aarch64-linux-gnu/include/c++/5/algorithm \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_algo.h \
@@ -198,7 +199,7 @@
  /usr/aarch64-linux-gnu/include/string.h \
  /usr/aarch64-linux-gnu/include/c++/5/functional \
  /usr/aarch64-linux-gnu/include/c++/5/typeinfo main.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla_os_inf.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla_os_inf.h \
  /usr/aarch64-linux-gnu/include/dirent.h \
  /usr/aarch64-linux-gnu/include/bits/dirent.h \
  /usr/aarch64-linux-gnu/include/c++/5/chrono \

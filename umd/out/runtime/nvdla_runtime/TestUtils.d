@@ -1,6 +1,6 @@
-/home/benjamin/Desktop/ONNC/sw/umd/out/runtime/nvdla_runtime/TestUtils.o: \
+/home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/out/runtime/nvdla_runtime/TestUtils.o: \
  TestUtils.cpp /usr/aarch64-linux-gnu/include/stdc-predef.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/ErrorMacros.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/ErrorMacros.h \
  /usr/lib/gcc-cross/aarch64-linux-gnu/5/include/stdint.h \
  /usr/aarch64-linux-gnu/include/stdint.h \
  /usr/aarch64-linux-gnu/include/features.h \
@@ -10,10 +10,11 @@
  /usr/aarch64-linux-gnu/include/gnu/stubs-lp64.h \
  /usr/aarch64-linux-gnu/include/bits/wchar.h \
  /usr/lib/gcc-cross/aarch64-linux-gnu/5/include/stdbool.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlaerror.h RuntimeTest.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlatypes.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla/IRuntime.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla/../../core/include/nvdla/IType.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlaerror.h \
+ RuntimeTest.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlatypes.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla/IRuntime.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla/../../core/include/nvdla/IType.h \
  /usr/aarch64-linux-gnu/include/c++/5/stdexcept \
  /usr/aarch64-linux-gnu/include/c++/5/exception \
  /usr/aarch64-linux-gnu/include/c++/5/aarch64-linux-gnu/bits/c++config.h \
@@ -126,7 +127,7 @@
  /usr/aarch64-linux-gnu/include/c++/5/array \
  /usr/aarch64-linux-gnu/include/c++/5/bits/uses_allocator.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_multimap.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla/../../core/include/nvdla/c/NvDlaType.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla/../../core/include/nvdla/c/NvDlaType.h \
  DlaImage.h /usr/aarch64-linux-gnu/include/c++/5/sstream \
  /usr/aarch64-linux-gnu/include/c++/5/istream \
  /usr/aarch64-linux-gnu/include/c++/5/ios \
@@ -156,11 +157,11 @@
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_vector.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_bvector.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/vector.tcc \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla_inf.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlaerror.h \
- /home/benjamin/Desktop/ONNC/sw/umd/include/dlatypes.h main.h \
- DlaImageUtils.h \
- /home/benjamin/Desktop/ONNC/sw/umd/external/include/half.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla_inf.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlaerror.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/dlatypes.h \
+ main.h DlaImageUtils.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/external/include/half.h \
  /usr/aarch64-linux-gnu/include/c++/5/algorithm \
  /usr/aarch64-linux-gnu/include/c++/5/bits/stl_algo.h \
  /usr/aarch64-linux-gnu/include/c++/5/bits/algorithmfwd.h \
@@ -199,7 +200,7 @@
  /usr/aarch64-linux-gnu/include/string.h \
  /usr/aarch64-linux-gnu/include/c++/5/functional \
  /usr/aarch64-linux-gnu/include/c++/5/typeinfo \
- /home/benjamin/Desktop/ONNC/sw/umd/include/nvdla_os_inf.h \
+ /home/benjamin/Desktop/NVDLA_SlimNNs/Runtime/sw/umd/include/nvdla_os_inf.h \
  /usr/aarch64-linux-gnu/include/dirent.h \
  /usr/aarch64-linux-gnu/include/bits/dirent.h \
  /usr/aarch64-linux-gnu/include/c++/5/fstream \
