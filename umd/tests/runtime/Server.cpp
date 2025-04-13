@@ -428,7 +428,7 @@ static NvDlaError executeTest(const TestAppArgs* appArgs, TestInfo *testInfo)
 
     NvDlaDebugPrintf("Executing the Test...\n");
 
-    e = run(appArgs, testInfo, &loadableNames);
+    e = run(appArgs, testInfo);
     if (e == NvDlaSuccess)
         prepareReplyMsg("[OK] Test PASSED!");
     else

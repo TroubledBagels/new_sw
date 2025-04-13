@@ -454,6 +454,7 @@ NvDlaError run(const TestAppArgs* tAA, TestInfo* testInfo)
     int final_part = 0;
     bool final = false;
     NvF32 confidence = 0.0f;
+    
     NvDlaDebugPrintf("creating new runtime contexts...\n");
     for (int i = 0; i < tAA->loadableNames.size(); i++)
     {
